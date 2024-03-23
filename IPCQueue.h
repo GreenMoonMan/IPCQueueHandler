@@ -23,9 +23,11 @@ class IPCQueue
 			char message[MAX_MESSAGE_LENGTH];
 		};
 
-		const std::filesystem::path _QUEUES_DIR = "/tmp/hoplite/message_queues/";
+		const std::filesystem::path QUEUES_DIR = "/tmp/hoplite/message_queues/";
+		std::filesystem::path _queueFile;
 		int _in_qid;
 		int _out_qid;
+		bool _first_instance = true;
 };
 
 #endif
