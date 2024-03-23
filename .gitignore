@@ -1,3 +1,13 @@
+# additional directories
+# directories
+bin/
+build/
+.cache/
+notes/
+
+# files
+scratchpad.txt
+
 # Prerequisites
 *.d
 

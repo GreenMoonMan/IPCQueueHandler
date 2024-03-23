@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build",
+			"type": "shell",
+			"command": "clear; cmake --build build; if [ $? -eq 0 ]; then printf \"\n\\e[1;32mBuild Success\"; else printf \"\n\\e[1;31mBuild Failed\"; fi; printf \"\n\"",
+			"problemMatcher": ["$gcc"],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"hide": true
+		},
+
+		{
+			"label": "run",
+			"type": "shell",
+			"command": "clear; printf \"[started]\n\"; cd ${workspaceFolder}/bin/; ./a.out; printf \"\nexited: $?\n\"",
+			"problemMatcher": [],
+		}
+	]
+}
