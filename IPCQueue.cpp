@@ -1,5 +1,6 @@
 #include "IPCQueue.h"
 #include <cstddef>
+#include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -10,7 +11,12 @@
 namespace fs = std::filesystem;
 using std::cout;
 using std::endl;
+using std::string;
 
+
+/****************************************************************************************************
+* Constructor/Destructor
+****************************************************************************************************/
 
 IPCQueue::IPCQueue(const std::string IPCName)
 {
@@ -52,7 +58,7 @@ IPCQueue::IPCQueue(const std::string IPCName)
 
 IPCQueue::~IPCQueue()
 {
-	// delete queue file if this object created it
+	// first instance gets to clean up
 	if(_first_instance)
 	{
 		cout << "first instance destroyed, cleaning up" << endl;
@@ -60,20 +66,39 @@ IPCQueue::~IPCQueue()
 		int out = msgctl(_out_qid, IPC_RMID, NULL);
 		int in = msgctl(_in_qid, IPC_RMID, NULL);
 		cout << "removed out: " << out << "\nremoved in: " << in << endl;
+		// delete queue file
 		fs::remove(_queueFile);
 	}
 }
 
 
+/****************************************************************************************************
+* Member functions
+****************************************************************************************************/
+
 std::string IPCQueue::read() const
 {
+	QueuedMessage msg;
+	int isMsg = msgrcv(_in_qid, &msg, sizeof(msg), 0, MSG_NOERROR | IPC_NOWAIT);
 
+	// return empty string if there is nothing to read
+	if(isMsg < 0)
+	{
+		return "";
+	}
+
+	return string(msg.message);
 }
 
 
 void IPCQueue::write(std::string command)
 {
-
+	// prepare message
+	QueuedMessage msg;
+	msg.type = 1;
+	strcpy(msg.message, command.c_str());
+	// send it
+	msgsnd(_out_qid, &msg, sizeof(msg), IPC_NOWAIT);
 }
 
 
