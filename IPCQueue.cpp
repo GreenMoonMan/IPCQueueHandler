@@ -29,7 +29,7 @@ IPCQueue::IPCQueue(const std::string IPCName)
 	// if queue already created
 	if(fs::exists(_queueFile))
 	{
-		cout << "queue file already exists" << endl;
+		// cout << "queue file already exists" << endl;
 		_first_instance = false;
 		outID = 1;
 		inID = 0;
@@ -39,7 +39,7 @@ IPCQueue::IPCQueue(const std::string IPCName)
 	{
 		_first_instance = true;
 		// create queue file
-		cout << "queue file does not exist, creating" << endl;
+		// cout << "queue file does not exist, creating" << endl;
 		std::ofstream qf(_queueFile);
 		qf << "queue created!" << endl;
 		qf.close();
@@ -61,11 +61,11 @@ IPCQueue::~IPCQueue()
 	// first instance gets to clean up
 	if(_first_instance)
 	{
-		cout << "first instance destroyed, cleaning up" << endl;
+		cout << "IPCQueue: first instance destroyed, cleaning up" << endl;
 		// destroy queues
 		int out = msgctl(_out_qid, IPC_RMID, NULL);
 		int in = msgctl(_in_qid, IPC_RMID, NULL);
-		cout << "removed out: " << out << "\nremoved in: " << in << endl;
+		// cout << "removed out: " << out << "\nremoved in: " << in << endl;
 		// delete queue file
 		fs::remove(_queueFile);
 	}
