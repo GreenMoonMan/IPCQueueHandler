@@ -3,6 +3,7 @@
 bin/
 build/
 .cache/
+.build_env
 notes/
 
 # files
