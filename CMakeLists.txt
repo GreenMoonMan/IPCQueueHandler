@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 
 project(IPCQueueHandler)
 
-file(GLOB codeFiles *.cpp)
+file(GLOB codeFiles main.cpp IPCQueue.cpp)
 
 
 set(CMAKE_CXX_STANDARD, 17)
